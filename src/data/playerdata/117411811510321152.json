@@ -1,0 +1,36 @@
+{
+  "characterName": "N3xtG4m3",
+  "sex": "♂️",
+  "class": "🧙",
+  "level": 1,
+  "exp": 86,
+  "penya": 377,
+  "hp": 500,
+  "mp": 100,
+  "fp": 75,
+  "str": 15,
+  "sta": 15,
+  "dex": 15,
+  "int": 15,
+  "availableStatPoints": 0,
+  "physicalATK": 100,
+  "def": 25,
+  "atkSpeed": 50,
+  "magicATK": 100,
+  "inventory": [
+    {
+      "name": "Beginner Wand",
+      "description": "A weak wand, but it's enough for the beginning",
+      "category": "weapon",
+      "damage": "5",
+      "price": 50
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    }
+  ]
+}

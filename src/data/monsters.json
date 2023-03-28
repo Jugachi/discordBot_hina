@@ -1,0 +1,33 @@
+[
+    {
+        "name": "Goblin",
+        "description": "The Goblin, also known as the IMP, is a small hooded creature that inhabits Plains and Grasslands",
+        "level": 1,
+        "hp": 20,
+        "mp": 10,
+        "fp": 5,
+        "physicalATK": 40,
+        "def": 10,
+        "str": 4,
+        "sta": 4,
+        "dex": 3,
+        "int": 1,
+        "atkSpeed": 25,
+        "magicAttack": 40,
+        "inventory": [
+			{
+				"name": "Health Potion",
+				"description": "Restores 50 health points.",
+				"category": "healing",
+				"healing": 50,
+				"price": 100
+			},
+			{
+				"name": "Scroll of Farming",
+				"description": "A scroll that increases the EXP gained from farming by 10%",
+				"category": "shop",
+				"price": 500
+			}
+		]
+    }
+]
