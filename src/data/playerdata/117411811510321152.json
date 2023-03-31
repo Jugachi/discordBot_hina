@@ -2,21 +2,21 @@
   "characterName": "N3xtG4m3",
   "sex": "♂️",
   "class": "🧙",
-  "level": 1,
-  "exp": 86,
-  "penya": 377,
+  "level": 36,
+  "penya": 7692,
+  "supporter": 1,
   "hp": 500,
-  "mp": 100,
+  "mp": 622,
   "fp": 75,
   "str": 15,
   "sta": 15,
   "dex": 15,
-  "int": 15,
-  "availableStatPoints": 0,
+  "int": 73,
+  "availableStatPoints": 12,
   "physicalATK": 100,
   "def": 25,
   "atkSpeed": 50,
-  "magicATK": 100,
+  "magicATK": 970,
   "inventory": [
     {
       "name": "Beginner Wand",
@@ -31,6 +31,139 @@
       "category": "healing",
       "healing": 50,
       "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Beginner Sword",
+      "description": "A weak sword, but it's enough for the beginning",
+      "category": "weapon",
+      "damage": "5",
+      "price": 50
+    },
+    {
+      "name": "Scroll of Farming",
+      "description": "A scroll that increases the EXP gained from farming by 10%",
+      "category": "scrolls",
+      "price": 500
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
+    },
+    {
+      "name": "Health Potion",
+      "description": "Restores 50 health points.",
+      "category": "healing",
+      "healing": 50,
+      "price": 100
     }
-  ]
+  ],
+  "exp": 1405
 }

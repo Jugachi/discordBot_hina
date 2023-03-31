@@ -11,7 +11,7 @@ module.exports = {
     const storagePath = `${__dirname}/../data/playerdata`;
     const userStorage = require(`${storagePath}/${interaction.user.id}.json`);
     // Read the items file
-    const itemsFile = fs.readFileSync(`${__dirname}/../data/items.json`);
+    const itemsFile = fs.readFileSync(`${__dirname}/../data/shop.json`);
     const items = JSON.parse(itemsFile);
 
     // Create an embed for the items list
@@ -31,11 +31,10 @@ module.exports = {
         
         const buyButton = new ButtonBuilder()
           .setStyle(ButtonStyle.Primary)
-          .setLabel(`Buy ${itemName2} for ${itemPrice}`)
+          .setLabel(`Buy ${itemName2}`)
           .setCustomId(`buy_${itemName}`);
   
-        row.addComponents(buyButton)
-  
+          row.addComponents(buyButton)
       }
 
     const message = await interaction.reply( {

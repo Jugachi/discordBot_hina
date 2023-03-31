@@ -37,7 +37,7 @@ function addStatPoints(userID, stat, points) {
 			break;
 		case 'int':
 			userStorage.int += points;
-			userStorage.statMP += points * 9;
+			userStorage.mp += points * 9;
 			userStorage.magicATK += points * 15;
 			break;
 		default:

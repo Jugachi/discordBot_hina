@@ -29,7 +29,10 @@ module.exports = {
 				{ name: 'Character Name', value: `${userStorage.characterName}` , inline: true },
 				{ name: 'Sex', value: `${userStorage.sex}`, inline: true },
 				)
-			.addFields(
+				if (userStorage.supporter === 1) {
+					statsEmbed.addFields({ name: 'Supporter', value: `❤️`, inline: true })
+				}
+			statsEmbed.addFields(
 				{ name: 'Level', value: `${userStorage.level}`},
 				{ name: 'Class', value: `${userStorage.class}`},
 				{ name: 'Penya', value: `${userStorage.penya}`},
@@ -37,6 +40,7 @@ module.exports = {
 				{ name: 'MP', value: `${userStorage.mp}`, inline: true },
 				{ name: 'FP', value: `${userStorage.fp}`, inline: true },
 				{ name: 'ATK', value: `${userStorage.physicalATK}`, inline: true },
+				{ name: 'Magic Attack', value: `${userStorage.magicATK}`, inline: true },
 				{ name: 'DEF', value: `${userStorage.def}`, inline: true },
 				
 				)
@@ -46,7 +50,6 @@ module.exports = {
 				{ name: 'DEX', value: `${userStorage.dex}`, inline: true },
 				{ name: 'INT', value: `${userStorage.int}`, inline: true },
 				{ name: 'Attack Speed', value: `${userStorage.atkSpeed} %`},
-				{ name: 'Magic Attack', value: `${userStorage.magicATK}`},
 			)
 			.addFields(
 				{ name: 'Available Stat Points', value: `${userStorage.availableStatPoints}`},

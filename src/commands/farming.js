@@ -7,9 +7,15 @@ let codeBlockString = codeBlock(string);
 
 const levels = require(`${__dirname}/../data/levels.json`);
 const cooldowns = require(`${__dirname}/../data/cooldowns.json`);
+const constants = require(`${__dirname}/../data/constants`)
 
 //Cooldown in minutes
-const COOLDOWN_DURATION = 60;
+const COOLDOWN_DURATION = 30;
+
+function expCalculation(exp, constants, currentLevel) {
+	const newExp = exp + Math.floor(Math.floor(Math.random() * 10) + 1 * currentLevel * constants.eventExp);
+	return { newExp };
+}
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -36,12 +42,13 @@ module.exports = {
 
 		// Retrieve the user's current values or set them to 0 if they don't exist
 		let currentLevel = userStorage.level || 1;
+		let previousLevel = userStorage.level;
 		let availableStatPoints = userStorage.availableStatPoints || 0;
 		const exp = userStorage.exp || 0;
 		const penya = userStorage.penya || 0;
 
 		// Increment the values by a random amount
-		const newExp = exp + Math.floor(Math.random() * 10) + 1;
+		let { newExp } = expCalculation(exp, constants, currentLevel);
 		const newPenya = penya + Math.floor(Math.random() * 50) + 1;
 
 		// Check for level up
@@ -50,6 +57,7 @@ module.exports = {
 			currentLevel++;
 			availableStatPoints += 2;
 			requiredExp = levels[currentLevel];
+			newExp = 0;
 		}
 
 		userStorage.level = currentLevel;
@@ -67,7 +75,7 @@ module.exports = {
 		fs.writeFileSync(playerDataPath, JSON.stringify(userStorage, null, 2));
 
 		// Set the user on cooldown
-		cooldowns[interaction.user.id] = Date.now() + COOLDOWN_DURATION * 1 * 1000;
+		cooldowns[interaction.user.id] = Date.now() + COOLDOWN_DURATION * 60 * 1000;
 		fs.writeFileSync(`${__dirname}/../data/cooldowns.json`, JSON.stringify(cooldowns, null, 2));
 
 		const farmingEmbed = new EmbedBuilder()
@@ -82,11 +90,26 @@ module.exports = {
 				{ name: 'EXP', value: `${exp} → ${newExp}`, inline: true},
 				{ name: 'Penya', value: `${penya} → ${newPenya}`, inline: true},
 				{
-					name: 'Cooldown', value: `${codeBlockString = codeBlock(`${COOLDOWN_DURATION} seconds`)}`
+					name: 'Cooldown', value: `${codeBlockString = codeBlock(`${COOLDOWN_DURATION} minutes`)}`
 				}
 			)
 			.setFooter({ text: 'Still under development!'})
 
+		if (currentLevel > previousLevel) {
+			const levelUpEmbed = new EmbedBuilder()
+			.setColor(0x00ff00)
+			.setTitle('Level up!')
+			.setDescription('Congratz your character got a level up!')
+			.setAuthor({ name: `${userStorage.characterName}`, iconURL: `${interaction.user.avatarURL()}` })
+			.addFields(
+				{ name: 'Level' , value: `${previousLevel} → ${currentLevel} `},
+			)
+			.setFooter({ text: 'Still under development!'})
+
+			interaction.reply({ embeds: [farmingEmbed, levelUpEmbed]});
+
+		} else {
 			interaction.reply({ embeds: [farmingEmbed]});
 		}
+	}
 };

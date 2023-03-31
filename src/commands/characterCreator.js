@@ -63,6 +63,7 @@ module.exports = {
 			level: 1,
 			exp: 0,
 			penya: 0,
+			supporter: 0,
 			hp: 500,
 			mp: 100,
 			fp: 75,
