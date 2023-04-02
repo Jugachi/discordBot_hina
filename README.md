@@ -1,16 +1,13 @@
 # discordBot_hina
 ### Requirements
 - Download [node.js](https://nodejs.org/en)
-- Get a [Create a Discord Bot](https://discord.com/developers/)
+- [Create a Discord Bot](https://discord.com/developers/)
 
 ### How to use
 - Replace the `DISCORD_BOT_TOKEN`, `CLIENT_ID` and `GUILD_ID` in the `.env` file
-
-Go to the src folder:
-```
-cd src
-```
+- Open your terminal or powershell and type the following:
 Type in your terminal:
-`node index.js`
+1. `cd src`
+2. `node index.js`
 
 The bot should be running.
