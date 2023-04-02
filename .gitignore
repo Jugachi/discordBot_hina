@@ -5,3 +5,4 @@ config.json
 
 # userdata
 src/data/playerdata/
+src/data/cooldowns.json

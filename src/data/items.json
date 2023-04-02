@@ -3,27 +3,35 @@
 		"name": "Beginner Sword",
 		"description": "A weak sword, but it's enough for the beginning",
 		"category": "weapon",
-		"damage": "5",
-		"price": 50
+		"damage": 5,
+		"price": 50,
+		"amount" : 1,
+		"maxAmount": 1
 	},
 	{
 		"name": "Beginner Wand",
 		"description": "A weak wand, but it's enough for the beginning",
 		"category": "weapon",
-		"damage": "5",
-		"price": 50
+		"damage": 5,
+		"price": 50,
+		"amount" : 1,
+		"maxAmount": 1
 	},
 	{
 		"name": "Health Potion",
 		"description": "Restores 50 health points.",
 		"category": "healing",
 		"healing": 50,
-		"price": 100
+		"price": 100,
+		"amount" : 1,
+		"maxAmount": 10
 	},
 	{
 		"name": "Scroll of Farming",
 		"description": "A scroll that increases the EXP gained from farming by 10%",
 		"category": "scrolls",
-		"price": 500
+		"price": 500,
+		"amount" : 1,
+		"maxAmount": 1
 	}
 ]

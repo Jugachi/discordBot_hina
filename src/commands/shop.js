@@ -8,10 +8,10 @@ module.exports = {
     .setDescription('You can buy various items in this shop'),
 
   async execute(interaction) {
-    const storagePath = `${__dirname}/../data/playerdata`;
+    const storagePath = `${process.cwd()}/data/playerdata`;
     const userStorage = require(`${storagePath}/${interaction.user.id}.json`);
     // Read the items file
-    const itemsFile = fs.readFileSync(`${__dirname}/../data/shop.json`);
+    const itemsFile = fs.readFileSync(`${process.cwd()}/data/shop.json`);
     const items = JSON.parse(itemsFile);
 
     // Create an embed for the items list
@@ -26,8 +26,15 @@ module.exports = {
 		    const itemDescription = itemData.description;
     	  const itemCategory = itemData.category;
     	  const itemPrice = itemData.price;
+        const itemAmount = itemData.amount;
+        const itemMaxAmount = itemData.maxAmount;
 
-        embed.addFields({ name: itemName2, value: `Description: ${itemDescription}\nPrice: ${itemPrice}`});
+          if (itemAmount === 1) {
+            embed.addFields({ name: itemName2, value: `Description: ${itemDescription}\nPrice: ${itemPrice}`})
+          } else {
+             embed.addFields(
+              { name: `${itemAmount}x ${itemName2}`, value: `Description: ${itemDescription}\nPrice: ${itemPrice}`})
+          }
         
         const buyButton = new ButtonBuilder()
           .setStyle(ButtonStyle.Primary)
@@ -54,6 +61,8 @@ module.exports = {
       const itemData = items[itemName];
       const itemName2 = itemData.name;
       const itemPrice = itemData.price;
+      const itemAmount = itemData.amount;
+      const itemMaxAmount = itemData.maxAmount
 
       const playerDataPath = path.join(__dirname, '..', 'data', 'playerdata');
 			fs.readdirSync(playerDataPath)
@@ -61,7 +70,6 @@ module.exports = {
 			.forEach(file => delete require.cache[require.resolve(path.join(playerDataPath, file))]);
 
       const userStorage = require(`${storagePath}/${interaction.user.id}.json`);
-
 
       if (userStorage.penya < itemData.price) {
         await interaction.reply({
@@ -71,15 +79,40 @@ module.exports = {
       } else {
         userStorage.penya -= itemData.price;
 
-        userStorage.inventory.push(itemData);
-
-        fs.writeFileSync(`${storagePath}/${interaction.user.id}.json`, JSON.stringify(userStorage));
-
+        let existingItem = userStorage.inventory.find(item => item.name === itemName2);
+        if (existingItem) {
+          if (existingItem.amount >= itemMaxAmount) {
+            await interaction.reply({
+              content: `You cannot add more ${existingItem.name}. You already have the maximum amount of ${itemMaxAmount}!`,
+              ephemeral: true
+            });
+          } else {
+            existingItem.amount += itemAmount;
+            await interaction.reply({
+              content: `Added ${itemAmount}x ${existingItem.name}. You now have ${existingItem.amount} ${existingItem.name}`,
+              ephemeral: true
+            });
+          }
+        } else {
+          const newItem = {
+            ...itemData,
+            name: itemName2,
+            amount: itemAmount,
+          };
+          if (itemData.damage) {
+            newItem.damage = itemData.damage
+          }
+          if (itemData.healing) {
+            newItem.healing = itemData.healing
+        }
+        userStorage.inventory.push(newItem);
         await interaction.reply({
-          content: `You have successfully bought ${itemName2} for ${itemPrice}!`,
-          ephemeral: true
-        });
-      }
+          content: `Added ${itemAmount} ${newItem.name}. You now have ${newItem.amount} ${newItem.name}.`,
+          ephemeral: true,
+          });
+          }
+        }
+        fs.writeFileSync(`${storagePath}/${interaction.user.id}.json`, JSON.stringify(userStorage));
     });
   }
 };
