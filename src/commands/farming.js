@@ -10,7 +10,7 @@ const cooldowns = require(`${__dirname}/../data/cooldowns.json`);
 const constants = require(`${__dirname}/../data/constants`)
 
 //Cooldown in minutes
-const COOLDOWN_DURATION = 30;
+const COOLDOWN_DURATION = 60;
 
 function expCalculation(exp, constants, currentLevel) {
 	const newExp = exp + Math.floor(Math.floor(Math.random() * 10) + 1 * currentLevel * constants.eventExp);
@@ -49,6 +49,7 @@ module.exports = {
 
 		// Increment the values by a random amount
 		let { newExp } = expCalculation(exp, constants, currentLevel);
+		let gainedExp = newExp - exp;
 		const newPenya = penya + Math.floor(Math.random() * 50) + 1;
 
 		// Check for level up
@@ -83,17 +84,32 @@ module.exports = {
 			.setTitle('Farming')
 			.setDescription('Your farming results are here')
 			.setAuthor({ name: `${userStorage.characterName}`, iconURL: `${interaction.user.avatarURL()}` })
-			.addFields(
-				{ name: 'Level' , value: `${currentLevel}`},
-				{ name: 'EXP until next Level', value: `${remainingExp}` },
-				{ name: 'Gained', value: `EXP: +${newExp - exp}\nPenya: +${newPenya - penya}`},
-				{ name: 'EXP', value: `${exp} → ${newExp}`, inline: true},
-				{ name: 'Penya', value: `${penya} → ${newPenya}`, inline: true},
-				{
-					name: 'Cooldown', value: `${codeBlockString = codeBlock(`${COOLDOWN_DURATION} minutes`)}`
-				}
-			)
-			.setFooter({ text: 'Still under development!'})
+			
+			if (currentLevel > previousLevel) {
+				farmingEmbed.addFields(
+					{ name: 'Level' , value: `${currentLevel}`},
+					{ name: 'EXP until next Level', value: `${levels[currentLevel + 1]}` },
+					{ name: 'Gained', value: `EXP: +${gainedExp}\nPenya: +${newPenya - penya}`},
+					{ name: 'EXP', value: `${exp} → ${newExp}`, inline: true},
+					{ name: 'Penya', value: `${penya} → ${newPenya}`, inline: true},
+					{
+						name: 'Cooldown', value: `${codeBlockString = codeBlock(`${COOLDOWN_DURATION} minutes`)}`
+					}
+				)
+				.setFooter({ text: 'Still under development!'})
+			} else {
+				farmingEmbed.addFields(
+					{ name: 'Level' , value: `${currentLevel}`},
+					{ name: 'EXP until next Level', value: `${remainingExp}` },
+					{ name: 'Gained', value: `EXP: +${newExp - exp}\nPenya: +${newPenya - penya}`},
+					{ name: 'EXP', value: `${exp} → ${newExp}`, inline: true},
+					{ name: 'Penya', value: `${penya} → ${newPenya}`, inline: true},
+					{
+						name: 'Cooldown', value: `${codeBlockString = codeBlock(`${COOLDOWN_DURATION} minutes`)}`
+					}
+				)
+				.setFooter({ text: 'Still under development!'})
+			}
 
 		if (currentLevel > previousLevel) {
 			const levelUpEmbed = new EmbedBuilder()
