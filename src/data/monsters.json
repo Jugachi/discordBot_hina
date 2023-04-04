@@ -2,32 +2,321 @@
     {
         "name": "Goblin",
         "description": "The Goblin, also known as the IMP, is a small hooded creature that inhabits Plains and Grasslands",
+        "category": "Normal Mob",
         "level": 1,
         "hp": 20,
-        "mp": 10,
-        "fp": 5,
+        "mp": 5,
+        "fp": 15,
         "physicalATK": 40,
         "def": 10,
         "str": 4,
         "sta": 4,
         "dex": 3,
         "int": 1,
-        "atkSpeed": 25,
-        "magicAttack": 40,
+        "atkSpeed": 3,
+        "magicATK": 10,
         "inventory": [
-			{
-				"name": "Health Potion",
-				"description": "Restores 50 health points.",
-				"category": "healing",
-				"healing": 50,
-				"price": 100
-			},
-			{
-				"name": "Scroll of Farming",
-				"description": "A scroll that increases the EXP gained from farming by 10%",
-				"category": "shop",
-				"price": 500
-			}
-		]
+            {
+                "name": "Health Potion",
+                "description": "Restores 50 health points.",
+                "category": "healing",
+                "healing": 50,
+                "price": 100
+            },
+            {
+                "name": "Scroll of Farming",
+                "description": "A scroll that increases the EXP gained from farming by 10%",
+                "category": "scrolls",
+                "price": 500
+            }
+        ]
+    },
+    {
+        "name": "Wolf",
+        "description": "Normally attacks in large groups, sometimes alongside Warg Wolves",
+        "category": "Normal Mob",
+        "level": 3,
+        "hp": 40,
+        "mp": 5,
+        "fp": 90,
+        "physicalATK": 80,
+        "def": 0,
+        "str": 8,
+        "sta": 8,
+        "dex": 18,
+        "int": 1,
+        "atkSpeed": 18,
+        "magicATK": 10,
+        "inventory": [
+            {
+                "name": "Health Potion",
+                "description": "Restores 50 health points",
+                "category": "healing",
+                "healing": 50,
+                "price": 100
+            },
+            {
+                "name": "Scroll of Farming",
+                "description": "A scroll that increases the EXP gained from farming by 10%",
+                "category": "scrolls",
+                "price": 500
+            }
+        ]
+    },
+    {
+        "name": "Ogre",
+        "description": " It is a strong physical enemy that normally appears with Gigas Worms",
+        "category": "Normal Mob",
+        "level": 5,
+        "hp": 50,
+        "mp": 20,
+        "fp": 45,
+        "physicalATK": 180,
+        "def": 25,
+        "str": 18,
+        "sta": 10,
+        "dex": 9,
+        "int": 4,
+        "atkSpeed": 9,
+        "magicATK": 40,
+        "inventory": [
+            {
+                "name": "Health Potion",
+                "description": "Restores 50 health points",
+                "category": "healing",
+                "healing": 50,
+                "price": 100
+            },
+            {
+                "name": "Scroll of Farming",
+                "description": "A scroll that increases the EXP gained from farming by 10%",
+                "category": "scrolls",
+                "price": 500
+            }
+        ]
+    },
+    {
+        "name": "Sahagin",
+        "description": "Sahuagin are fishlike, monstrous humanoids that appear near Water scources",
+        "category": "Normal Mob",
+        "level": 4,
+        "hp": 20,
+        "mp": 20,
+        "fp": 180,
+        "physicalATK": 100,
+        "def": 10,
+        "str": 10,
+        "sta": 4,
+        "dex": 36,
+        "int": 4,
+        "atkSpeed": 36,
+        "magicATK": 40,
+        "inventory": [
+            {
+                "name": "Health Potion",
+                "description": "Restores 50 health points",
+                "category": "healing",
+                "healing": 50,
+                "price": 100
+            },
+            {
+                "name": "Scroll of Farming",
+                "description": "A scroll that increases the EXP gained from farming by 10%",
+                "category": "scrolls",
+                "price": 500
+            }
+        ]
+    },
+    {
+        "name": "Tarantula",
+        "description": "Known for their impressive size, Tarantulas are often kept as pets or used in cuisine. Despite their tendency to inflict the Poison status",
+        "category": "Normal Mob",
+        "level": 2,
+        "hp": 60,
+        "mp": 15,
+        "fp": 15,
+        "physicalATK": 50,
+        "def": 30,
+        "str": 5,
+        "sta": 12,
+        "dex": 3,
+        "int": 3,
+        "atkSpeed": 3,
+        "magicATK": 30,
+        "inventory": [
+            {
+                "name": "Health Potion",
+                "description": "Restores 50 health points",
+                "category": "healing",
+                "healing": 50,
+                "price": 100
+            },
+            {
+                "name": "Scroll of Farming",
+                "description": "A scroll that increases the EXP gained from farming by 10%",
+                "category": "scrolls",
+                "price": 500
+            }
+        ]
+    },
+    {
+        "name": "Goblin Guard",
+        "description": "The Goblin Guard, also known as GrIMP.They are stronger than the regular Goblin",
+        "category": "Normal Mob",
+        "level": 2,
+        "hp": 30,
+        "mp": 15,
+        "fp": 25,
+        "physicalATK": 80,
+        "def": 15,
+        "str": 8,
+        "sta": 6,
+        "dex": 5,
+        "int": 3,
+        "atkSpeed": 5,
+        "magicalATK": 30,
+        "inventory": [
+            {
+                "name": "Health Potion",
+                "description": "Restores 50 health points",
+                "category": "healing",
+                "healing": 50,
+                "price": 100
+            },
+            {
+                "name": "Scroll of Farming",
+                "description": "A scroll that increases the EXP gained from farming by 10%",
+                "category": "scrolls",
+                "price": 500
+            }
+        ]
+    },
+    {
+        "name": "Crazy Horse",
+        "description": "They are wild horses that roam the plains",
+        "category": "Normal Mob",
+        "level": 4,
+        "hp": 10,
+        "mp": 20,
+        "fp": 55,
+        "physicalATK": 100,
+        "def": 5,
+        "str": 10,
+        "sta": 2,
+        "dex": 11,
+        "int": 4,
+        "atkSpeed": 11,
+        "magicATK": 40,
+        "inventory": [
+            {
+                "name": "Health Potion",
+                "description": "Restores 50 health points",
+                "category": "healing",
+                "healing": 50,
+                "price": 100
+            },
+            {
+                "name": "Scroll of Farming",
+                "description": "A scroll that increases the EXP gained from farming by 10%",
+                "category": "scrolls",
+                "price": 500
+            }
+        ]
+    },
+    {
+        "name": "Skeleton",
+        "description": "A skeleton is a type of physically manifested undead often found in fantasy, gothic and horror fiction, and mythical art.",
+        "category": "Normal Mob",
+        "level": 3,
+        "hp": 20,
+        "mp": 0,
+        "fp": 30,
+        "physicalATK": 100,
+        "def": 10,
+        "str": 10,
+        "sta": 4,
+        "dex": 6,
+        "int": 0,
+        "atkSpeed": 6,
+        "magicATK": 0,
+        "inventory": [
+            {
+                "name": "Health Potion",
+                "description": "Restores 50 health points",
+                "category": "healing",
+                "healing": 50,
+                "price": 100
+            },
+            {
+                "name": "Scroll of Farming",
+                "description": "A scroll that increases the EXP gained from farming by 10%",
+                "category": "scrolls",
+                "price": 500
+            }
+        ]
+    },
+    {
+        "name": "Zombie",
+        "description": "A zombie is an animated corpse resurrected by mystical means, such as necromancy.",
+        "category": "Normal Mob",
+        "level": 4,
+        "hp": 50,
+        "mp": 0,
+        "fp": 15,
+        "physicalATK": 100,
+        "def": 25,
+        "str": 10,
+        "sta": 10,
+        "dex": 3,
+        "int": 0,
+        "atkSpeed": 3,
+        "magicATK": 0,
+        "inventory": [
+            {
+                "name": "Health Potion",
+                "description": "Restores 50 health points",
+                "category": "healing",
+                "healing": 50,
+                "price": 100
+            },
+            {
+                "name": "Scroll of Farming",
+                "description": "A scroll that increases the EXP gained from farming by 10%",
+                "category": "scrolls",
+                "price": 500
+            }
+        ]
+    },
+    {
+        "name": "Gigas Worm",
+        "description": "Dont let it fool you just because its a Worm.Gigas is a Greek word meaning GIANT.",
+        "category": "Normal Mob",
+        "level": 8,
+        "hp": 40,
+        "mp": 45,
+        "fp": 60,
+        "physicalATK": 170,
+        "def": 20,
+        "str": 17,
+        "sta": 8,
+        "dex": 12,
+        "int": 9,
+        "atkSpeed": 12,
+        "magicATK": 90,
+        "inventory": [
+            {
+                "name": "Health Potion",
+                "description": "Restores 50 health points",
+                "category": "healing",
+                "healing": 50,
+                "price": 100
+            },
+            {
+                "name": "Scroll of Farming",
+                "description": "A scroll that increases the EXP gained from farming by 10%",
+                "category": "scrolls",
+                "price": 500
+            }
+        ]
     }
 ]

@@ -20,19 +20,26 @@ module.exports = {
       .setDescription(`Here is a list of all the items available for purchase:\nYou have ${userStorage.penya} penya`)
       .setColor('#00FF00');
 
+      const closeButton = new ButtonBuilder()
+        .setStyle(ButtonStyle.Danger)
+        .setLabel('Close Shop')
+        .setCustomId('close')
+      
+      const closeButtonRow = new ActionRowBuilder().addComponents(closeButton);
+
       const row = new ActionRowBuilder();
       for (const [itemName, itemData] of Object.entries(items)) {
         const itemName2 = itemData.name;
-		    const itemDescription = itemData.description;
-    	  const itemCategory = itemData.category;
-    	  const itemPrice = itemData.price;
+        const itemDescription = itemData.description;
+        const itemCategory = itemData.category;
+        const itemPrice = itemData.price;
         const itemAmount = itemData.amount;
         const itemMaxAmount = itemData.maxAmount;
 
           if (itemAmount === 1) {
             embed.addFields({ name: itemName2, value: `Description: ${itemDescription}\nPrice: ${itemPrice}`})
           } else {
-             embed.addFields(
+            embed.addFields(
               { name: `${itemAmount}x ${itemName2}`, value: `Description: ${itemDescription}\nPrice: ${itemPrice}`})
           }
         
@@ -44,13 +51,21 @@ module.exports = {
           row.addComponents(buyButton)
       }
 
+      // Prevents the bot from crashing, after closing the shop, because the message got already deleted
+      let deletedMsg = 0;
+
     const message = await interaction.reply( {
       embeds: [embed],
-      components: [row],
+      components: [row, closeButtonRow],
       fetchReply: true
     });
     setTimeout(() => {
-      interaction.deleteReply();
+      if (deletedMsg > 0) {
+        let deletedMsg = 0;
+        return;
+      } else {
+        interaction.deleteReply();
+      }
     }, 30000);
 
     const filter = (interaction) => interaction.isButton() && interaction.message.id === message.id;
@@ -58,6 +73,17 @@ module.exports = {
 
     collector.on('collect', async (interaction) => {
       const itemName = interaction.customId.split('_')[1];
+      
+      if (interaction.customId.split('close')) {
+        await interaction.reply({
+          content: 'Closing the shop...',
+          ephemeral: true,
+        });
+        deletedMsg++;
+        await message.delete();
+        return;
+      }
+
       const itemData = items[itemName];
       const itemName2 = itemData.name;
       const itemPrice = itemData.price;

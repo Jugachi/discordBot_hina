@@ -16,7 +16,7 @@
 #### How to use
 - Replace the `DISCORD_BOT_TOKEN`, `CLIENT_ID` and `GUILD_ID` in the `.env` file
 - Open your terminal or powershell and type the following:
-<br>
+
 1. `cd src`
 2. `node index.js`
 

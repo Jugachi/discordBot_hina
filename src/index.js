@@ -2,8 +2,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Events, GatewayIntentBits, Collection, EmbedBuilder } = require('discord.js');
 const deployCommands = require('./deploy-commands.js');
-let { messageCount, randomChancePerMessage } = require('./data/monsters');
-const imagePath = path.join('../assets/monsters/goblin.png')
+let { messageCount, randomChancePerMessage, generateMonsterEmbed, monsterPath } = require('./data/monsters');
+
+
 require('dotenv').config();
 
 // Create a new client instance
@@ -66,16 +67,15 @@ client.once('ready', async () => {
         console.error(error);
     }
 });
-let desiredCount = 10;
+
 client.on('messageCreate', async (message) => {
 	if (message.author.bot) return;
 	// Increment the message count
+	const desiredCount = randomChancePerMessage();
 	messageCount++;
+	console.log(messageCount)
+	console.log(desiredCount)
 
-	console.log('messageCount: ' + messageCount)
-
-
-console.log('desiredCount: '+desiredCount)
 setInterval(() => {
 	if (messageCount >= desiredCount) {
 		messageCount = 0;
@@ -83,13 +83,11 @@ setInterval(() => {
 		let guild = client.guilds.cache.get('117411643738161154')
 		let channel = guild.channels.cache.get('1089663109515448411')
 
-		const embed = new EmbedBuilder()
-			.setTitle('Goblin')
-			.setImage(`attachment://${path.basename(imagePath)}`)
+		const { embed: monsterEmbed, path: monsterPath } = generateMonsterEmbed();
 
-	channel.send({ embeds: [embed], files: [imagePath] })
+	channel.send({ embeds: [monsterEmbed], files: [monsterPath] })
 	}
-}, 1000)});
+}, 10000)});
 
 // Log in to Discord with your client's token
 client.login(process.env.DISCORD_BOT_TOKEN);
