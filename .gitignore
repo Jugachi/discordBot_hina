@@ -6,3 +6,4 @@ config.json
 # userdata
 src/data/playerdata/
 src/data/cooldowns.json
+src/data/streaks.json

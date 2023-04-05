@@ -64,6 +64,7 @@ module.exports = {
 			exp: 0,
 			penya: 0,
 			supporter: 0,
+			streak: 0,
 			hp: 500,
 			mp: 100,
 			fp: 75,
@@ -95,5 +96,13 @@ module.exports = {
 			fs.writeFileSync(storageFilePath, JSON.stringify(userStorage, null, 2));
 			interaction.reply(`The ${userStorage.sex} ${userStorage.class}, ${characterName} has been successfully created. Time to start /farming!`);
 			console.log(`${interaction.user.tag} has created a character.`)
+
+			const statisticsDB = `${__dirname}/../data/statistics.json`
+			const statistics = {};
+			let totalCharacter = statistics.totalCharacter || 0;
+			totalCharacter++;
+			statistics.totalCharacter = totalCharacter;
+			
+			fs.writeFileSync(statisticsDB, JSON.stringify(statistics, null, 2));
 	},
 };

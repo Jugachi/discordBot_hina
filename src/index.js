@@ -1,9 +1,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Events, GatewayIntentBits, Collection, EmbedBuilder } = require('discord.js');
+const { Client, Events, GatewayIntentBits, Collection, EmbedBuilder, ActivityType } = require('discord.js');
 const deployCommands = require('./deploy-commands.js');
 let { messageCount, randomChancePerMessage, generateMonsterEmbed, monsterPath } = require('./data/monsters');
-
+let statstics  = require('./data/statistics.json');
 
 require('dotenv').config();
 
@@ -53,11 +53,31 @@ client.on(Events.InteractionCreate, async interaction => {
 	}
 });
 
+let activitiesList = [];
+
+function updateTotalCharacter() {
+	let data = JSON.parse(fs.readFileSync('./data/statistics.json'))
+	return data.totalCharacter
+}
+updateTotalCharacter();
+
+activitiesList.push({ name: 'start with /create'});
+activitiesList.push({ name: `over ${updateTotalCharacter()} characters`, type: ActivityType.Watching });
+
+let activityIndex = 0;
+
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
-	client.user.setPresence({ activities: [{ name: 'start with /create' }] });
+
+	setInterval(() => {
+		activitiesList.push({ name: `over ${updateTotalCharacter()} characters`, type: ActivityType.Watching });
+	}, 60000);
+	setInterval(() => {
+		client.user.setPresence({ activities: [activitiesList[activityIndex]] });
+		activityIndex = (activityIndex + 1 ) % activitiesList.length;
+	}, 10000);
 });
 
 client.once('ready', async () => {
@@ -73,8 +93,6 @@ client.on('messageCreate', async (message) => {
 	// Increment the message count
 	const desiredCount = randomChancePerMessage();
 	messageCount++;
-	console.log(messageCount)
-	console.log(desiredCount)
 
 setInterval(() => {
 	if (messageCount >= desiredCount) {

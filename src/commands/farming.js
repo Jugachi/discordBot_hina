@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { SlashCommandBuilder, EmbedBuilder, bold, blockQuote, codeBlock } = require('discord.js');
+let { streakChecker } = require('../data/streak');
 let string = ``;
 let boldString = bold(string);
 let blockQuoteString = blockQuote(string);
@@ -7,13 +8,14 @@ let codeBlockString = codeBlock(string);
 
 const levels = require(`${__dirname}/../data/levels.json`);
 const cooldowns = require(`${__dirname}/../data/cooldowns.json`);
+const streaks = require(`${__dirname}/../data/streaks.json`);
 const constants = require(`${__dirname}/../data/constants`)
 
 //Cooldown in minutes
 const COOLDOWN_DURATION = 60;
 
-function expCalculation(exp, constants, currentLevel) {
-	const newExp = exp + Math.floor(Math.floor(Math.random() * 10) + 1 * currentLevel * constants.eventExp);
+function expCalculation(exp, constants, currentLevel, streak) {
+	const newExp = exp + Math.floor(Math.floor(Math.random() * 10) + 1 * currentLevel * constants.eventBonus * streakChecker(streak));
 	return { newExp };
 }
 
@@ -46,9 +48,28 @@ module.exports = {
 		let availableStatPoints = userStorage.availableStatPoints || 0;
 		const exp = userStorage.exp || 0;
 		const penya = userStorage.penya || 0;
+		let streak = userStorage.streak || 0;
+
+		const streakCooldown = 24 * 60 * 60 * 1000; // 24 hours
+
+		if (streaks[interaction.user.id]) {
+			const lastUsed = streaks[interaction.user.id];
+			const timeSinceLastUsed = Date.now() - lastUsed;
+
+			if (timeSinceLastUsed < streakCooldown) {
+
+			} else {
+				userStorage.streak++;
+			}
+		} else {
+			userStorage.streak = 0;
+		}
+		
+		streaks[interaction.user.id] = Date.now();
+		fs.writeFileSync(`${__dirname}/../data/streaks.json`, JSON.stringify(streaks, null, 2));
 
 		// Increment the values by a random amount
-		let { newExp } = expCalculation(exp, constants, currentLevel);
+		let { newExp } = expCalculation(exp, constants, currentLevel, streak);
 		let gainedExp = newExp - exp;
 		const newPenya = penya + Math.floor(Math.random() * 50) + 1;
 
@@ -72,7 +93,7 @@ module.exports = {
 		const currentLevelExp = levels[currentLevel.toString()];
 		const remainingExp = currentLevelExp - newExp;
 		
-			// Write the updated storage object back to the storage file
+		// Write the updated storage object back to the storage file
 		fs.writeFileSync(playerDataPath, JSON.stringify(userStorage, null, 2));
 
 		// Set the user on cooldown
@@ -89,7 +110,7 @@ module.exports = {
 				farmingEmbed.addFields(
 					{ name: 'Level' , value: `${currentLevel}`},
 					{ name: 'EXP until next Level', value: `${levels[currentLevel + 1]}` },
-					{ name: 'Gained', value: `EXP: +${gainedExp}\nPenya: +${newPenya - penya}`},
+					{ name: 'Gained', value: `EXP: +${gainedExp}\nPenya: +${newPenya - penya}\nStreak: ${userStorage.streak}`},
 					{ name: 'EXP', value: `${exp} → ${newExp}`, inline: true},
 					{ name: 'Penya', value: `${penya} → ${newPenya}`, inline: true},
 					{
@@ -101,7 +122,7 @@ module.exports = {
 				farmingEmbed.addFields(
 					{ name: 'Level' , value: `${currentLevel}`},
 					{ name: 'EXP until next Level', value: `${remainingExp}` },
-					{ name: 'Gained', value: `EXP: +${newExp - exp}\nPenya: +${newPenya - penya}`},
+					{ name: 'Gained', value: `EXP: +${newExp - exp}\nPenya: +${newPenya - penya}\nStreak: ${userStorage.streak}`},
 					{ name: 'EXP', value: `${exp} → ${newExp}`, inline: true},
 					{ name: 'Penya', value: `${penya} → ${newPenya}`, inline: true},
 					{
