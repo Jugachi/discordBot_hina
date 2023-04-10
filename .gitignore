@@ -7,3 +7,4 @@ config.json
 src/data/playerdata/
 src/data/cooldowns.json
 src/data/streaks.json
+src/data/guilds.json

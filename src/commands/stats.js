@@ -35,7 +35,7 @@ module.exports = {
 			statsEmbed.addFields(
 				{ name: 'Level', value: `${userStorage.level}`},
 				{ name: 'Class', value: `${userStorage.class}`},
-				{ name: 'Penya', value: `${userStorage.penya}`},
+				{ name: 'Gold', value: `${userStorage.gold}`},
 				{ name: 'HP', value: `${userStorage.hp}`, inline: true },
 				{ name: 'MP', value: `${userStorage.mp}`, inline: true },
 				{ name: 'FP', value: `${userStorage.fp}`, inline: true },

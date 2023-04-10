@@ -62,7 +62,7 @@ module.exports = {
 			class: interaction.options.getString('class'),
 			level: 1,
 			exp: 0,
-			penya: 0,
+			gold: 0,
 			supporter: 0,
 			streak: 0,
 			hp: 500,

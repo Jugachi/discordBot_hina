@@ -17,7 +17,7 @@ module.exports = {
     // Create an embed for the items list
     const embed = new EmbedBuilder()
       .setTitle('Shop')
-      .setDescription(`Here is a list of all the items available for purchase:\nYou have ${userStorage.penya} penya`)
+      .setDescription(`Here is a list of all the items available for purchase:\nYou have ${userStorage.gold} gold`)
       .setColor('#00FF00');
 
       const closeButton = new ButtonBuilder()
@@ -97,13 +97,13 @@ module.exports = {
 
       const userStorage = require(`${storagePath}/${interaction.user.id}.json`);
 
-      if (userStorage.penya < itemData.price) {
+      if (userStorage.gold < itemData.price) {
         await interaction.reply({
-          content: `You don't have enough penya to buy ${itemName2}.`,
+          content: `You don't have enough gold to buy ${itemName2}.`,
           ephemeral: true
         });
       } else {
-        userStorage.penya -= itemData.price;
+        userStorage.gold -= itemData.price;
 
         let existingItem = userStorage.inventory.find(item => item.name === itemName2);
         if (existingItem) {

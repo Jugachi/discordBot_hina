@@ -3,7 +3,7 @@
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3"
   },
-  "name": "discordbot_flyff",
+  "name": "discordbot_hina",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {

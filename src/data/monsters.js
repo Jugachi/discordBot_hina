@@ -8,14 +8,14 @@ let monsterPath;
 function generateMonsterEmbed(monsterPath) {
 	let monsters = JSON.parse(fs.readFileSync(monsterStorage));
 	let monster = monsters[Math.floor(Math.random() * monsters.length)];
-	monsterPath = path.join(monsterDirectory, `${monster.name}.png`);
+	monsterPath = path.join(monsterDirectory, `${monster.img}.png`);
 	let inventory = monster.inventory;
 	let itemNames = '';
 	inventory.forEach(item => itemNames += `${item.name}\n`)
 
 	const monsterEmbed = new EmbedBuilder()
 		.setTitle(monster.name)
-		.setImage(`attachment://${monster.name}.png`)
+		.setImage(`attachment://${monster.img}.png`)
 		.addFields(
 			{ name: 'Level', value: `${monster.level}`},
 			{ name: 'Description', value: `${monster.description}`},
@@ -31,7 +31,7 @@ function generateMonsterEmbed(monsterPath) {
 			{ name: 'INT', value: `${monster.int}`, inline: true },
 			{ name: 'Drops', value: itemNames },
 		)
-		.setFooter('Still under development');
+		.setFooter({ text: 'Still under development' })
 
 		return {embed: monsterEmbed, path: monsterPath};
 }
@@ -43,7 +43,7 @@ function randomChancePerMessage() {
 
 	if (randomNum <= percentChance) {
 		const totalMessages = 100;
-		const desiredCount = Math.floor(Math.random() * totalMessages);
+		const desiredCount = Math.floor(Math.random() * totalMessages + 10);
 		return desiredCount
 	}
 }
