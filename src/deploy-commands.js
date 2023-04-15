@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { REST, Routes } = require('discord.js');
+const { REST, Routes} = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -16,18 +16,19 @@ for (const file of commandFiles) {
 
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN);
 
-async function deployCommands() {
+async function deployCommands(client) {
 	try {
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
 		const guildIds = process.env.GUILD_ID.split(',');
+		const guilds = await Promise.all(guildIds.map(id => client.guilds.fetch(id)));
 
-		for (const guildId of guildIds) {
+		for (const guild of guilds) {
 			const data = await rest.put(
-				Routes.applicationGuildCommands(process.env.CLIENT_ID, guildId),
+				Routes.applicationGuildCommands(process.env.CLIENT_ID, guild.id),
 				{ body : commands },
 			);
-			console.log(`Successfully reloaded ${data.length} application (/) commands for guild ${guildId}`);
+			console.log(`Successfully reloaded ${data.length} application (/) commands for guild ${guild.id}`);
 			
 		}
 	} catch (error) {
@@ -35,4 +36,7 @@ async function deployCommands() {
 	}
 }
 
-module.exports = deployCommands;
+module.exports = {
+	commands,
+	deployCommands
+}

@@ -1,18 +1,26 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Events, GatewayIntentBits, Collection, EmbedBuilder, ActivityType, blockQuote } = require('discord.js');
-const deployCommands = require('./deploy-commands.js');
+const { Client, Events, GatewayIntentBits, Collection, EmbedBuilder, ActivityType, REST, Routes } = require('discord.js');
+const { deployCommands, commands} = require('./deploy-commands.js');
 let { messageCount, randomChancePerMessage, generateMonsterEmbed, monsterPath } = require('./data/monsters');
 let statstics  = require('./data/statistics.json');
 const dotenv = require('dotenv');
 const { getGuildConfig } = require('./data/constants.js');
-let string = ``;
-let blockQuoteString = blockQuote(string);
 
 require('dotenv').config();
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers] });
+const client = new Client({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.MessageContent
+	],
+});
+
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN);
 
 client.commands = new Collection();
 
@@ -34,7 +42,7 @@ client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
 	if (interaction.commandName === 'deploy-commands') {
-		await deployCommands();
+		await deployCommands(client);
 		await interaction.reply('Application commands reloaded!');
 	}
 	
@@ -66,11 +74,13 @@ function updateTotalCharacter() {
 updateTotalCharacter();
 
 activitiesList.push({ name: 'start with /create'});
-//activitiesList.push({ name: `over ${updateTotalCharacter()} characters`, type: ActivityType.Watching });
+activitiesList.push({ name: `over ${updateTotalCharacter()} characters`, type: ActivityType.Watching });
 
 let activityIndex = 0;
 
-let guildIDs = [];
+dotenv.config({ path: '.env' });
+const envConfig = dotenv.parse(fs.readFileSync('.env'));
+let guildIDs = envConfig.GUILD_ID ? envConfig.GUILD_ID.split(';') : [];
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, c => {
@@ -78,14 +88,14 @@ client.once(Events.ClientReady, c => {
 
 	const guildIDs = client.guilds.cache.map(guild => guild.id);
 	console.log(`Bot is on guilds: ${guildIDs.join(', ')}`);
-	const envConfig = dotenv.parse(fs.readFileSync('.env'));
 	envConfig.GUILD_ID = guildIDs.join(',');
 	const envString = Object.entries(envConfig).map(([key, value]) => `${key}=${value}`).join('\n');
 	fs.writeFileSync('.env', envString);
-	deployCommands();
+	deployCommands(client);
 
 	setInterval(() => {
-		activitiesList.push({ name: ` over ${updateTotalCharacter()} characters`, type: ActivityType.Watching });
+		activitiesList.pop();
+		activitiesList.push({ name: `over ${updateTotalCharacter()} characters`, type: ActivityType.Watching });
 	}, 60000);
 	setInterval(() => {
 		client.user.setPresence({ activities: [activitiesList[activityIndex]] });
@@ -93,43 +103,68 @@ client.once(Events.ClientReady, c => {
 	}, 10000);
 });
 
-client.on('guildCreate', guild => {
+client.on('guildCreate', async guild => {
+
 	guildIDs.push(guild.id);
 	console.log(`Added guild ${guild.id} (${guild.name}) to list`);
-	dotenv.config({ path: '.env '});
-	const envConfig = dotenv.parse(fs.readFileSync('.env'));
+
 	envConfig.GUILD_ID = guildIDs.join(',');
+
 	const envString = Object.entries(envConfig).map(([key, value]) => `${key}=${value}`).join('\n');
 	fs.writeFileSync('.env', envString);
-	deployCommands();
+
+	await new Promise(resolve => setTimeout(resolve, 5000));
+
+	try {
+		data = await rest.put(
+			Routes.applicationGuildCommands(process.env.CLIENT_ID, guild.id),
+			{ body : commands },
+		);
+		console.log(`Successfully reloaded ${data.length} application (/) commands for guild ${guild.id}`);
+	} catch (error) {
+		console.error(`Failed to deploy commands for guild ${guild.id}: ${error.message}`);
+	}
 
 	 // Find a channel where the bot can send messages
-	 const channel = guild.channels.cache.find(channel =>
+	const channel = guild.channels.cache.find(channel =>
 		channel.type === 0 // && channel.permissionsFor(guild.me).has('SEND_MESSAGES')
-	  );
+	);
 	
 	  // If the bot cannot find a channel to send messages, return
-	  if (!channel) {
+	if (!channel) {
 		console.log(`Could not find a channel to send messages in guild ${guild.name} (id: ${guild.id}).`);
 		return;
-	  }
+	}
 	
-	  // Send a message to the channel
-	  channel.send(`Hello, everyone! Make sure to use ${blockQuoteString = blockQuote('/setchannel')} to configure a channel!`);
+	// Send a message to the channel
+	channel.send(`Hello, everyone! Make sure to use /setchannel to configure a channel!`);
 });
 
 client.on('guildDelete', guild => {
-	guildIDs = guildIDs.filter(id => id !== guild.id);
-	console.log(`Removed guild ${guild.id} (${guild.name}) from list`);
-	dotenv.config({ path: '.env '});
-	const envConfig = dotenv.parse(fs.readFileSync('.env'));
-	envConfig.GUILD_ID = guildIDs.join(',');
-	const envString = Object.entries(envConfig).map(([key, value]) => `${key}=${value}`).join('\n');
-	fs.writeFileSync('.env', envString);
+	console.log(guildIDs)
+	const index = guildIDs.indexOf(guild.id);
+
+	if (index > -1) {
+		guildIDs.splice(index, 1);
+		console.log(`Removed guild ${guild.id} (${guild.name}) from list`);
+		dotenv.config({ path: '.env'});
+		const envConfig = dotenv.parse(fs.readFileSync('.env'));
+		envConfig.GUILD_ID = guildIDs.join(',');
+		const envString = Object.entries(envConfig).map(([key, value]) => `${key}=${value}`).join('\n');
+		fs.writeFileSync('.env', envString);
+	} else {
+		console.log(`Guild ${guild.id} (${guild.name}) not found in list`)
+	}
 })
 
 client.on('messageCreate', async (message) => {
 	if (message.author.bot) return;
+
+	if (message.content === 'update' && message.author.id === process.env.AUTHOR) {
+		deployCommands(client)
+		const guildIDs = client.guilds.cache.map(guild => guild.id);
+		client.users.send(process.env.AUTHOR, `Updated commands for: ${guildIDs.join(', ')}` )
+	}
 
 	const guildId = message.guild.id;
 	const guildConfig = await getGuildConfig(guildId);
