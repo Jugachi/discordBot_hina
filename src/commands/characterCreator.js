@@ -98,11 +98,21 @@ module.exports = {
 			console.log(`${interaction.user.tag} has created a character.`)
 
 			const statisticsDB = `${__dirname}/../data/statistics.json`
-			const statistics = {};
-			let totalCharacter = statistics.totalCharacter || 0;
-			totalCharacter++;
-			statistics.totalCharacter = totalCharacter;
-			
-			fs.writeFileSync(statisticsDB, JSON.stringify(statistics, null, 2));
+
+			if (Object.entries(statisticsDB).length === 0)
+			{
+				const statistics = {};
+				let totalCharacter = statistics.totalCharacter || 0;
+				totalCharacter++;
+				statistics.totalCharacter = totalCharacter;
+				
+				fs.writeFileSync(statisticsDB, JSON.stringify(statistics, null, 2));
+			} else {
+				let data = JSON.parse(fs.readFileSync(statisticsDB))
+				data.totalCharacter++;
+
+				fs.writeFileSync(statisticsDB, JSON.stringify(data, null, 2))
+			}
+
 	},
 };
