@@ -1,10 +1,6 @@
 const fs = require('fs');
-const { SlashCommandBuilder, EmbedBuilder, bold, blockQuote, codeBlock } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 let { streakChecker } = require('../data/streak');
-let string = ``;
-let boldString = bold(string);
-let blockQuoteString = blockQuote(string);
-let codeBlockString = codeBlock(string);
 
 const levels = require(`${__dirname}/../data/levels.json`);
 const cooldowns = require(`${__dirname}/../data/cooldowns.json`);
@@ -51,16 +47,31 @@ module.exports = {
 
 		const streakCooldown = 24 * 60 * 60 * 1000; // 24 hours
 
+		function getUtcMidnight() {
+			const now = new Date();
+			const utcMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
+			return utcMidnight;
+		}
+
+		function isBeforeUtcMidnight(timestamp) {
+			const utcMidnight = getUtcMidnight();
+			const msUntilMidnight = utcMidnight.getTime() - timestamp;
+			return msUntilMidnight > 0;
+		}
+
 		if (streaks[interaction.user.id]) {
 			const lastUsed = streaks[interaction.user.id];
 			const timeSinceLastUsed = Date.now() - lastUsed;
 
 			if (timeSinceLastUsed < streakCooldown) {
-
-			} else {
+				// User has used the command too recently, do nothing
+			} else if (isBeforeUtcMidnight(lastUsed)) {
+				// User used the command before midnight UTC+0 on the current day, increment the streak
 				userStorage.streak++;
 				streaks[interaction.user.id] = Date.now();
 				fs.writeFileSync(`${__dirname}/../data/streaks.json`, JSON.stringify(streaks, null, 2));
+			} else {
+				// User used the command after midnight UTC+0 on the current day, do not increment the streak
 			}
 		} else {
 			userStorage.streak = 0;
